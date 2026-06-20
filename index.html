@@ -47,6 +47,12 @@ a{color:#60a5fa}
 ⚡ <b>1 free Quick Queue per pass</b> (good for the Skyride) · 💸 20% off food, 25% off merch · free PhotoKey.
 </div>
 
+<div class="card">
+  <div class="plan-name" style="font-size:15px">🎬 Shows at a glance — where & how long</div>
+  <div class="plan-sum">Durations are approximate (SeaWorld doesn't publish exact run-times); confirm in the app. ★ = reserve your seat in the app.</div>
+  <div class="tl" id="glance"></div>
+</div>
+
 <div class="pills" id="pills"></div>
 
 <div class="card">
@@ -63,6 +69,19 @@ a{color:#60a5fa}
 const TYPES={show:{c:'var(--show)',label:'show'},meal:{c:'var(--meal)',label:'meal'},
 animals:{c:'var(--animals)',label:'animals / touch pools'},play:{c:'var(--play)',label:'play'},
 nap:{c:'var(--nap)',label:'nap'},leave:{c:'var(--leave)',label:'leave / logistics'}};
+
+// venue + approx duration + price per show. SeaWorld doesn't publish exact run-times,
+// so durations are approximate. All stadium shows are FREE with admission; reserved
+// seating + Quick Queue are normally paid upgrades but FREE with your Platinum passes.
+function showInfo(act){
+  const a=(act||'').toLowerCase();
+  if(a.includes('orca')) return {venue:"Orca Stadium",dur:"~25 min",price:"Free · reserved seat free w/ Platinum"};
+  if(a.includes('dolphin adventures')||a.includes('dolphins:')||a.includes('dolphin show')) return {venue:"Dolphin Amphitheater",dur:"~25 min",price:"Free · reserved seat free w/ Platinum"};
+  if(a.includes('sea lion')||a.includes('flippers')) return {venue:"Sea Lion & Otter Amphitheater",dur:"~25 min",price:"Free · reserved seat free w/ Platinum"};
+  if(a.includes('drone')||a.includes('ocean of dreams')) return {venue:"Over the park / Bayside",dur:"~15 min",price:"Free"};
+  if(a.includes('rescue jr')) return {venue:"Rescue Jr. Stage",dur:"~20 min",price:"Free"};
+  return null;
+}
 
 // each item: [time, activity, type, location]   (★ = Platinum reserved-seat show, reserve in app)
 const PLANS=[
@@ -155,12 +174,16 @@ function render(i){
   document.getElementById('psum').textContent=pl.s;
   const tl=document.getElementById('tl'); tl.innerHTML='';
   pl.items.forEach(([time,act,type,loc])=>{
+    const inf=(type==='show'||type==='play')?showInfo(act):null;
+    const where=loc||(inf?inf.venue:'');
+    const bits=[where, inf?inf.dur:'', inf?('💲 '+inf.price):''].filter(Boolean);
+    const locTxt=bits.length?('📍 '+bits.join(' · ')):'';
     const row=document.createElement('div'); row.className='row';
     row.innerHTML=`<div class="time">${time}</div>
       <div class="body">
         <div class="act"><span class="dot" style="background:${TYPES[type].c}"></span>${act}
           <span class="tag" style="background:${TYPES[type].c}">${tag[type]}</span></div>
-        ${loc?`<div class="loc">📍 ${loc}</div>`:''}
+        ${locTxt?`<div class="loc">${locTxt}</div>`:''}
       </div>`;
     tl.appendChild(row);
   });
@@ -169,6 +192,20 @@ PLANS.forEach((pl,i)=>{
   const b=document.createElement('div'); b.className='pill'; b.textContent=pl.n;
   b.onclick=()=>render(i); pills.appendChild(b);
 });
+// Shows-at-a-glance reference (duration in the time column)
+const GLANCE=["Orca Encounter ★","Dolphin Adventures ★","Flippers, Facts & Fun (Sea Lions) ★","Rescue Jr. Dance Party","Ocean of Dreams drone show"];
+const g=document.getElementById('glance');
+GLANCE.forEach(a=>{
+  const inf=showInfo(a);
+  const row=document.createElement('div'); row.className='row';
+  row.innerHTML=`<div class="time">${inf.dur}</div>
+    <div class="body">
+      <div class="act"><span class="dot" style="background:var(--show)"></span>${a}</div>
+      <div class="loc">📍 ${inf.venue} · 💲 ${inf.price}</div>
+    </div>`;
+  g.appendChild(row);
+});
+
 document.getElementById('legend').innerHTML=Object.entries(TYPES)
   .map(([k,v])=>`<span><i style="background:${v.c}"></i>${v.label}</span>`).join('');
 render(0);
