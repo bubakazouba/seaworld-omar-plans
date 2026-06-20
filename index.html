@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SeaWorld San Diego — Day Plans for Omar (Sat Jun 20)</title>
+<style>
+:root{--show:#db2777;--meal:#f59e0b;--animals:#0d9488;--play:#3b82f6;--nap:#a78bfa;--leave:#94a3b8;
+--bg:#0f172a;--card:#1e293b;--ink:#e2e8f0;--mut:#94a3b8;--line:#334155;}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif;padding:14px;max-width:760px;margin:0 auto}
+h1{font-size:21px;margin:0 0 2px}
+.sub{color:var(--mut);font-size:13px;margin-bottom:14px}
+.pills{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:14px}
+.pill{background:#334155;color:var(--ink);border:1px solid #475569;border-radius:999px;padding:7px 12px;font-size:13px;cursor:pointer;transition:.15s;-webkit-tap-highlight-color:transparent}
+.pill.active{background:var(--show);border-color:var(--show);color:#fff;font-weight:700}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px}
+.plan-name{font-size:18px;font-weight:800;margin:0 0 2px}
+.plan-sum{color:var(--mut);font-size:13px;margin-bottom:14px}
+.tl{position:relative;margin-left:4px}
+.row{display:flex;gap:12px;padding:9px 0;border-top:1px solid var(--line)}
+.row:first-child{border-top:none}
+.time{flex:0 0 74px;font-variant-numeric:tabular-nums;font-weight:700;font-size:14px;color:#cbd5e1}
+.body{flex:1;min-width:0}
+.act{font-weight:600;font-size:15px;display:flex;align-items:center;gap:8px}
+.dot{width:11px;height:11px;border-radius:50%;flex:0 0 auto}
+.loc{color:var(--mut);font-size:12.5px;margin-top:1px}
+.tag{font-size:11px;color:#0f172a;font-weight:800;padding:1px 7px;border-radius:6px;margin-left:auto;white-space:nowrap}
+.legend{display:flex;flex-wrap:wrap;gap:12px;font-size:12.5px;color:var(--mut);margin-top:4px}
+.legend span{display:flex;align-items:center;gap:5px}
+.legend i{width:11px;height:11px;border-radius:3px;display:inline-block}
+.note{color:var(--mut);font-size:12px;margin-top:12px;line-height:1.5}
+.cta{background:#334155;border:1px solid #475569;border-radius:10px;padding:11px 13px;font-size:13.5px;color:var(--ink);margin-top:6px}
+a{color:#60a5fa}
+</style>
+</head>
+<body>
+<h1>🌊 SeaWorld San Diego — Plans for Omar</h1>
+<div class="sub">Saturday, June 20 · arrive ~noon · Omar (2yo) · all shows are walk-in, no reservation · times match the real park schedule</div>
+
+<div class="pills" id="pills"></div>
+
+<div class="card">
+  <div class="plan-name" id="pname"></div>
+  <div class="plan-sum" id="psum"></div>
+  <div class="tl" id="tl"></div>
+  <div class="legend" id="legend"></div>
+</div>
+
+<div class="cta">Tap a plan above to see its full timeline. Tell the bot a number to lock it in (or to buy tickets — $59.99/adult, Omar free).</div>
+<div class="note">Heads up: at 33" Omar is below most ride heights, so this is a shows + animals + play day (Octarock + the Skyride are his only rides). Show times are the real Sat 6/20 schedule but the park can shift them — double-check the SeaWorld app the morning of.</div>
+
+<script>
+const TYPES={show:{c:'var(--show)',label:'show'},meal:{c:'var(--meal)',label:'meal'},
+animals:{c:'var(--animals)',label:'animals / touch pools'},play:{c:'var(--play)',label:'play'},
+nap:{c:'var(--nap)',label:'nap'},leave:{c:'var(--leave)',label:'leave'}};
+
+// each item: [time, activity, type, location]
+const PLANS=[
+{n:"1 · Show Maximizer", s:"Catch every big show. Full day, leave ~7:45pm.", items:[
+ ["12:00pm","Orca Encounter","show","Orca Stadium"],
+ ["12:30pm","Lunch","meal",""],
+ ["1:30pm","Character Meet & Greet","show","Front of Park"],
+ ["2:00pm","Touch pools + animals","animals","Explorer's Reef"],
+ ["2:30pm","Rescue Jr. Dance Party","play","Rescue Jr. Stage"],
+ ["3:00pm","Omar nap (stroller) + animal stroll","nap",""],
+ ["4:30pm","Flippers, Facts & Fun (Sea Lions)","show","Sea Lion Amphitheater"],
+ ["5:00pm","Dinner","meal",""],
+ ["6:00pm","Orca Encounter","show","Orca Stadium"],
+ ["7:00pm","Dolphins: Touch the Sky","show","Dolphin Amphitheater"],
+ ["7:30pm","Head out","leave",""]]},
+{n:"2 · Toddler-paced", s:"The key shows + a nap, out by ~5:30 before a meltdown.", items:[
+ ["12:00pm","Orca Encounter","show","Orca Stadium"],
+ ["12:30pm","Lunch","meal",""],
+ ["1:30pm","Character Meet & Greet","show","Front of Park"],
+ ["2:00pm","Touch pools + animals","animals","Explorer's Reef"],
+ ["2:30pm","Rescue Jr. Dance Party","play","Rescue Jr. Stage"],
+ ["3:00pm","Omar nap (stroller)","nap",""],
+ ["4:30pm","Flippers, Facts & Fun (Sea Lions)","show","Sea Lion Amphitheater"],
+ ["5:00pm","Last animals → leave","leave",""]]},
+{n:"3 · Night Finale", s:"Everything + the nighttime drone show. Big day, leave ~9:15pm.", items:[
+ ["12:00pm","Orca Encounter","show","Orca Stadium"],
+ ["12:30pm","Lunch","meal",""],
+ ["1:30pm","Character Meet & Greet","show","Front of Park"],
+ ["2:00pm","Touch pools + animals","animals","Explorer's Reef"],
+ ["2:30pm","Rescue Jr. Dance Party","play","Rescue Jr. Stage"],
+ ["3:00pm","Omar nap (stroller)","nap",""],
+ ["4:30pm","Flippers, Facts & Fun (Sea Lions)","show","Sea Lion Amphitheater"],
+ ["5:00pm","Dinner","meal",""],
+ ["6:00pm","Orca Encounter","show","Orca Stadium"],
+ ["7:00pm","Dolphins: Touch the Sky","show","Dolphin Amphitheater"],
+ ["8:15pm","Light Up the Night","show","Park-wide"],
+ ["8:45pm","Ocean of Dreams Drone Show","show","Mission Bay over the park"],
+ ["9:15pm","Head out","leave",""]]},
+{n:"4 · Animals-First", s:"Light on shows, heavy on exhibits + touch pools. Out ~5pm.", items:[
+ ["12:00pm","Lunch","meal",""],
+ ["12:45pm","Explorer's Reef touch pools","animals","Explorer's Reef"],
+ ["1:15pm","Penguins, turtles, otters","animals","Penguin Encounter / Turtle Reef"],
+ ["2:00pm","Shark tunnel + aquarium","animals","Shark Encounter"],
+ ["2:30pm","Omar nap (stroller)","nap",""],
+ ["4:00pm","Orca Encounter","show","Orca Stadium"],
+ ["4:30pm","Flippers, Facts & Fun (Sea Lions)","show","Sea Lion Amphitheater"],
+ ["5:00pm","Head out","leave",""]]},
+{n:"5 · Early Out", s:"Relaxed half-day; nap back at the hotel. Leave ~3pm.", items:[
+ ["12:00pm","Orca Encounter","show","Orca Stadium"],
+ ["12:30pm","Lunch","meal",""],
+ ["1:30pm","Character Meet & Greet","show","Front of Park"],
+ ["2:00pm","Touch pools + animals","animals","Explorer's Reef"],
+ ["2:30pm","Rescue Jr. Dance Party","play","Rescue Jr. Stage"],
+ ["3:00pm","Head out (nap at hotel)","leave",""]]},
+{n:"6 · Nap-First", s:"Eat + nap early, then shows all afternoon/evening.", items:[
+ ["12:00pm","Lunch","meal",""],
+ ["12:45pm","Omar nap (stroller)","nap",""],
+ ["2:15pm","Animals + touch pools","animals","Explorer's Reef"],
+ ["2:30pm","Rescue Jr. Dance Party","play","Rescue Jr. Stage"],
+ ["3:00pm","Wonders of N. American Wildlife","show","Wild Arctic area"],
+ ["4:00pm","Orca Encounter","show","Orca Stadium"],
+ ["4:30pm","Flippers, Facts & Fun (Sea Lions)","show","Sea Lion Amphitheater"],
+ ["5:00pm","Dinner","meal",""],
+ ["7:00pm","Dolphins: Touch the Sky","show","Dolphin Amphitheater"],
+ ["7:30pm","Head out","leave",""]]},
+{n:"7 · Two-Orca Classic", s:"See the orcas twice + play, easy pace. Out ~5:30.", items:[
+ ["12:00pm","Orca Encounter","show","Orca Stadium"],
+ ["12:30pm","Lunch","meal",""],
+ ["1:15pm","Touch pools + animals","animals","Explorer's Reef"],
+ ["2:00pm","Rescue Jr. play + splash","play","Rescue Jr."],
+ ["2:30pm","Omar nap (stroller)","nap",""],
+ ["4:00pm","Orca Encounter","show","Orca Stadium"],
+ ["4:30pm","Last animals","animals",""],
+ ["5:00pm","Head out","leave",""]]},
+{n:"8 · Splurge (Reserved)", s:"All shows with Reserved Seating + Quick Queue + All-Day Dining.", items:[
+ ["12:00pm","Orca Encounter — reserved seats","show","Orca Stadium"],
+ ["12:30pm","Lunch (All-Day Dining)","meal",""],
+ ["1:30pm","Character Meet & Greet","show","Front of Park"],
+ ["2:00pm","Touch pools + animals","animals","Explorer's Reef"],
+ ["2:30pm","Rescue Jr. Dance Party","play","Rescue Jr. Stage"],
+ ["3:00pm","Omar nap (stroller)","nap",""],
+ ["4:30pm","Sea Lions — reserved seats","show","Sea Lion Amphitheater"],
+ ["5:00pm","Dinner (All-Day Dining)","meal",""],
+ ["6:00pm","Orca Encounter — reserved seats","show","Orca Stadium"],
+ ["7:00pm","Dolphins: Touch the Sky","show","Dolphin Amphitheater"],
+ ["7:30pm","Head out","leave",""]]},
+{n:"9 · Dolphin & Orca Focus", s:"Maximize orca + dolphin time. Out ~7:45.", items:[
+ ["12:00pm","Orca Encounter","show","Orca Stadium"],
+ ["12:30pm","Lunch","meal",""],
+ ["1:15pm","Dolphin viewing + animals","animals","Dolphin Point / Explorer's Reef"],
+ ["2:30pm","Omar nap (stroller)","nap",""],
+ ["4:00pm","Orca Encounter","show","Orca Stadium"],
+ ["4:30pm","Dinner","meal",""],
+ ["6:00pm","Orca Encounter","show","Orca Stadium"],
+ ["7:00pm","Dolphins: Touch the Sky","show","Dolphin Amphitheater"],
+ ["7:30pm","Head out","leave",""]]},
+{n:"10 · Balanced", s:"A bit of everything, comfortable pace. Leave ~7.", items:[
+ ["12:00pm","Orca Encounter","show","Orca Stadium"],
+ ["12:30pm","Lunch","meal",""],
+ ["1:30pm","Character Meet & Greet","show","Front of Park"],
+ ["2:30pm","Rescue Jr. Dance Party","play","Rescue Jr. Stage"],
+ ["3:00pm","Omar nap (stroller)","nap",""],
+ ["4:30pm","Flippers, Facts & Fun (Sea Lions)","show","Sea Lion Amphitheater"],
+ ["5:00pm","Dinner","meal",""],
+ ["6:00pm","Orca Encounter","show","Orca Stadium"],
+ ["6:45pm","Head out","leave",""]]},
+];
+
+const pills=document.getElementById('pills');
+const tag={show:"SHOW",meal:"MEAL",animals:"ANIMALS",play:"PLAY",nap:"NAP",leave:"LEAVE"};
+function render(i){
+  [...pills.children].forEach((p,j)=>p.classList.toggle('active',j===i));
+  const pl=PLANS[i];
+  document.getElementById('pname').textContent=pl.n;
+  document.getElementById('psum').textContent=pl.s;
+  const tl=document.getElementById('tl'); tl.innerHTML='';
+  pl.items.forEach(([time,act,type,loc])=>{
+    const row=document.createElement('div'); row.className='row';
+    row.innerHTML=`<div class="time">${time}</div>
+      <div class="body">
+        <div class="act"><span class="dot" style="background:${TYPES[type].c}"></span>${act}
+          <span class="tag" style="background:${TYPES[type].c}">${tag[type]}</span></div>
+        ${loc?`<div class="loc">📍 ${loc}</div>`:''}
+      </div>`;
+    tl.appendChild(row);
+  });
+}
+PLANS.forEach((pl,i)=>{
+  const b=document.createElement('div'); b.className='pill'; b.textContent=pl.n;
+  b.onclick=()=>render(i); pills.appendChild(b);
+});
+document.getElementById('legend').innerHTML=Object.entries(TYPES)
+  .map(([k,v])=>`<span><i style="background:${v.c}"></i>${v.label}</span>`).join('');
+render(0);
+</script>
+</body>
+</html>
