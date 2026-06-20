@@ -31,12 +31,21 @@ h1{font-size:21px;margin:0 0 2px}
 .legend i{width:11px;height:11px;border-radius:3px;display:inline-block}
 .note{color:var(--mut);font-size:12px;margin-top:12px;line-height:1.5}
 .cta{background:#334155;border:1px solid #475569;border-radius:10px;padding:11px 13px;font-size:13.5px;color:var(--ink);margin-top:6px}
+.perks{background:#13203a;border:1px solid #1e3a5f;border-radius:12px;padding:13px 14px;margin-bottom:14px;font-size:13px;line-height:1.55}
+.perks b{color:#7dd3fc}
 a{color:#60a5fa}
 </style>
 </head>
 <body>
 <h1>🌊 SeaWorld San Diego — Plans for Omar</h1>
-<div class="sub">Saturday, June 20 · arrive ~noon · Omar (2yo) · all shows are walk-in, no reservation · times match the real park schedule</div>
+<div class="sub">Saturday, June 20 · arrive ~1pm · Omar (2yo) · park open 9am–9pm · ★ = Platinum reserved-seat show (reserve in the app)</div>
+
+<div class="perks">
+🎟️ <b>You have 2 Platinum passes</b> (Omar 2yo = free entry). What that gets you:<br>
+🪑 <b>Reserved show seating</b> at Orca, Dolphin & Sea Lion venues — <b>reserve in the SeaWorld app first</b> (★ below), it's not walk-up.<br>
+🚗 <b>Up-Close (front) parking</b> free if available — ask at the booth.<br>
+⚡ <b>1 free Quick Queue per pass</b> (good for the Skyride) · 💸 20% off food, 25% off merch · free PhotoKey.
+</div>
 
 <div class="pills" id="pills"></div>
 
@@ -47,123 +56,98 @@ a{color:#60a5fa}
   <div class="legend" id="legend"></div>
 </div>
 
-<div class="cta">Tap a plan above to see its full timeline. Tell the bot a number to lock it in (or to buy tickets — $59.99/adult, Omar free).</div>
-<div class="note">Heads up: at 33" Omar is below most ride heights, so this is a shows + animals + play day (Octarock + the Skyride are his only rides). Show times are the real Sat 6/20 schedule but the park can shift them — double-check the SeaWorld app the morning of.</div>
+<div class="cta">Tap a plan above to see its timeline. Tell the bot a number to lock it in. ★ shows = reserve seats in the app now.</div>
+<div class="note">Reality of a 1pm arrival: parking + security/bag check + ticket scan eats ~30–45 min, so you're realistically inside/seated ~1:45–2:00, not 1pm. Plans are built around that. At 33" Omar is below most ride heights, so this is a shows + animals + play day (Octarock + the Skyride are his only rides). Exact show times shift daily — <b>confirm them in the SeaWorld app the morning of and reserve your ★ seats there.</b></div>
 
 <script>
 const TYPES={show:{c:'var(--show)',label:'show'},meal:{c:'var(--meal)',label:'meal'},
 animals:{c:'var(--animals)',label:'animals / touch pools'},play:{c:'var(--play)',label:'play'},
-nap:{c:'var(--nap)',label:'nap'},leave:{c:'var(--leave)',label:'leave'}};
+nap:{c:'var(--nap)',label:'nap'},leave:{c:'var(--leave)',label:'leave / logistics'}};
 
-// each item: [time, activity, type, location]
+// each item: [time, activity, type, location]   (★ = Platinum reserved-seat show, reserve in app)
 const PLANS=[
-{n:"1 · Show Maximizer", s:"Catch every big show. Full day, leave ~7:45pm.", items:[
- ["12:00pm","Orca Encounter","show","Orca Stadium"],
- ["12:30pm","Lunch","meal",""],
- ["1:30pm","Character Meet & Greet","show","Front of Park"],
- ["2:00pm","Touch pools + animals","animals","Explorer's Reef"],
- ["2:30pm","Rescue Jr. Dance Party","play","Rescue Jr. Stage"],
- ["3:00pm","Omar nap (stroller) + animal stroll","nap",""],
- ["4:30pm","Flippers, Facts & Fun (Sea Lions)","show","Sea Lion Amphitheater"],
- ["5:00pm","Dinner","meal",""],
- ["6:00pm","Orca Encounter","show","Orca Stadium"],
- ["7:00pm","Dolphins: Touch the Sky","show","Dolphin Amphitheater"],
- ["7:30pm","Head out","leave",""]]},
-{n:"2 · Toddler-paced", s:"The key shows + a nap, out by ~5:30 before a meltdown.", items:[
- ["12:00pm","Orca Encounter","show","Orca Stadium"],
- ["12:30pm","Lunch","meal",""],
- ["1:30pm","Character Meet & Greet","show","Front of Park"],
- ["2:00pm","Touch pools + animals","animals","Explorer's Reef"],
- ["2:30pm","Rescue Jr. Dance Party","play","Rescue Jr. Stage"],
- ["3:00pm","Omar nap (stroller)","nap",""],
- ["4:30pm","Flippers, Facts & Fun (Sea Lions)","show","Sea Lion Amphitheater"],
- ["5:00pm","Last animals → leave","leave",""]]},
-{n:"3 · Night Finale", s:"Everything + the nighttime drone show. Big day, leave ~9:15pm.", items:[
- ["12:00pm","Orca Encounter","show","Orca Stadium"],
- ["12:30pm","Lunch","meal",""],
- ["1:30pm","Character Meet & Greet","show","Front of Park"],
- ["2:00pm","Touch pools + animals","animals","Explorer's Reef"],
- ["2:30pm","Rescue Jr. Dance Party","play","Rescue Jr. Stage"],
- ["3:00pm","Omar nap (stroller)","nap",""],
- ["4:30pm","Flippers, Facts & Fun (Sea Lions)","show","Sea Lion Amphitheater"],
- ["5:00pm","Dinner","meal",""],
- ["6:00pm","Orca Encounter","show","Orca Stadium"],
- ["7:00pm","Dolphins: Touch the Sky","show","Dolphin Amphitheater"],
- ["8:15pm","Light Up the Night","show","Park-wide"],
- ["8:45pm","Ocean of Dreams Drone Show","show","Mission Bay over the park"],
+{n:"1 · Show Maximizer", s:"All 3 big shows + the night drone show. Full day, leave ~9pm.", items:[
+ ["1:00pm","Arrive, Up-Close parking, security","leave",""],
+ ["1:45pm","Into park + grab lunch","meal",""],
+ ["2:30pm","Orca Encounter ★","show","Orca Stadium"],
+ ["3:15pm","Touch pools + animals","animals","Explorer's Reef"],
+ ["4:00pm","Flippers, Facts & Fun (Sea Lions) ★","show","Sea Lion Amphitheater"],
+ ["4:45pm","Omar nap (stroller) + shaded animal stroll","nap",""],
+ ["6:00pm","Dinner (20% Platinum discount)","meal",""],
+ ["6:45pm","Dolphin Adventures ★","show","Dolphin Amphitheater"],
+ ["7:45pm","Skyride + animals (free Quick Queue)","play","Bayside Skyride"],
+ ["8:45pm","Ocean of Dreams drone show","show","over the park"],
+ ["9:00pm","Head out","leave",""]]},
+{n:"2 · Toddler-paced", s:"The key shows + a real nap, out by ~6 before a meltdown.", items:[
+ ["1:00pm","Arrive + park + security","leave",""],
+ ["1:45pm","Lunch","meal",""],
+ ["2:30pm","Orca Encounter ★","show","Orca Stadium"],
+ ["3:15pm","Touch pools + Rescue Jr. Dance Party","play","Explorer's Reef / Rescue Jr."],
+ ["4:00pm","Omar nap (stroller)","nap",""],
+ ["5:15pm","Flippers, Facts & Fun (Sea Lions) ★","show","Sea Lion Amphitheater"],
+ ["6:00pm","Last animals → head out","leave",""]]},
+{n:"3 · Night Finale", s:"Everything + the nighttime drone show. Big day, leave ~9:15.", items:[
+ ["1:00pm","Arrive + park + security","leave",""],
+ ["1:45pm","Lunch","meal",""],
+ ["2:30pm","Orca Encounter ★","show","Orca Stadium"],
+ ["3:15pm","Touch pools + animals","animals","Explorer's Reef"],
+ ["4:00pm","Flippers, Facts & Fun (Sea Lions) ★","show","Sea Lion Amphitheater"],
+ ["4:45pm","Omar nap (stroller)","nap",""],
+ ["6:00pm","Dinner","meal",""],
+ ["6:45pm","Dolphin Adventures ★","show","Dolphin Amphitheater"],
+ ["8:00pm","Wild Arctic + animals","animals","Wild Arctic"],
+ ["8:45pm","Ocean of Dreams drone show","show","over the park"],
  ["9:15pm","Head out","leave",""]]},
-{n:"4 · Animals-First", s:"Light on shows, heavy on exhibits + touch pools. Out ~5pm.", items:[
- ["12:00pm","Lunch","meal",""],
- ["12:45pm","Explorer's Reef touch pools","animals","Explorer's Reef"],
- ["1:15pm","Penguins, turtles, otters","animals","Penguin Encounter / Turtle Reef"],
- ["2:00pm","Shark tunnel + aquarium","animals","Shark Encounter"],
- ["2:30pm","Omar nap (stroller)","nap",""],
- ["4:00pm","Orca Encounter","show","Orca Stadium"],
- ["4:30pm","Flippers, Facts & Fun (Sea Lions)","show","Sea Lion Amphitheater"],
- ["5:00pm","Head out","leave",""]]},
-{n:"5 · Early Out", s:"Relaxed half-day; nap back at the hotel. Leave ~3pm.", items:[
- ["12:00pm","Orca Encounter","show","Orca Stadium"],
- ["12:30pm","Lunch","meal",""],
- ["1:30pm","Character Meet & Greet","show","Front of Park"],
- ["2:00pm","Touch pools + animals","animals","Explorer's Reef"],
- ["2:30pm","Rescue Jr. Dance Party","play","Rescue Jr. Stage"],
- ["3:00pm","Head out (nap at hotel)","leave",""]]},
-{n:"6 · Nap-First", s:"Eat + nap early, then shows all afternoon/evening.", items:[
- ["12:00pm","Lunch","meal",""],
- ["12:45pm","Omar nap (stroller)","nap",""],
- ["2:15pm","Animals + touch pools","animals","Explorer's Reef"],
- ["2:30pm","Rescue Jr. Dance Party","play","Rescue Jr. Stage"],
- ["3:00pm","Wonders of N. American Wildlife","show","Wild Arctic area"],
- ["4:00pm","Orca Encounter","show","Orca Stadium"],
- ["4:30pm","Flippers, Facts & Fun (Sea Lions)","show","Sea Lion Amphitheater"],
- ["5:00pm","Dinner","meal",""],
- ["7:00pm","Dolphins: Touch the Sky","show","Dolphin Amphitheater"],
- ["7:30pm","Head out","leave",""]]},
-{n:"7 · Two-Orca Classic", s:"See the orcas twice + play, easy pace. Out ~5:30.", items:[
- ["12:00pm","Orca Encounter","show","Orca Stadium"],
- ["12:30pm","Lunch","meal",""],
- ["1:15pm","Touch pools + animals","animals","Explorer's Reef"],
- ["2:00pm","Rescue Jr. play + splash","play","Rescue Jr."],
- ["2:30pm","Omar nap (stroller)","nap",""],
- ["4:00pm","Orca Encounter","show","Orca Stadium"],
- ["4:30pm","Last animals","animals",""],
- ["5:00pm","Head out","leave",""]]},
-{n:"8 · Splurge (Reserved)", s:"All shows with Reserved Seating + Quick Queue + All-Day Dining.", items:[
- ["12:00pm","Orca Encounter — reserved seats","show","Orca Stadium"],
- ["12:30pm","Lunch (All-Day Dining)","meal",""],
- ["1:30pm","Character Meet & Greet","show","Front of Park"],
- ["2:00pm","Touch pools + animals","animals","Explorer's Reef"],
- ["2:30pm","Rescue Jr. Dance Party","play","Rescue Jr. Stage"],
- ["3:00pm","Omar nap (stroller)","nap",""],
- ["4:30pm","Sea Lions — reserved seats","show","Sea Lion Amphitheater"],
- ["5:00pm","Dinner (All-Day Dining)","meal",""],
- ["6:00pm","Orca Encounter — reserved seats","show","Orca Stadium"],
- ["7:00pm","Dolphins: Touch the Sky","show","Dolphin Amphitheater"],
- ["7:30pm","Head out","leave",""]]},
-{n:"9 · Dolphin & Orca Focus", s:"Maximize orca + dolphin time. Out ~7:45.", items:[
- ["12:00pm","Orca Encounter","show","Orca Stadium"],
- ["12:30pm","Lunch","meal",""],
- ["1:15pm","Dolphin viewing + animals","animals","Dolphin Point / Explorer's Reef"],
- ["2:30pm","Omar nap (stroller)","nap",""],
- ["4:00pm","Orca Encounter","show","Orca Stadium"],
- ["4:30pm","Dinner","meal",""],
- ["6:00pm","Orca Encounter","show","Orca Stadium"],
- ["7:00pm","Dolphins: Touch the Sky","show","Dolphin Amphitheater"],
- ["7:30pm","Head out","leave",""]]},
-{n:"10 · Balanced", s:"A bit of everything, comfortable pace. Leave ~7.", items:[
- ["12:00pm","Orca Encounter","show","Orca Stadium"],
- ["12:30pm","Lunch","meal",""],
- ["1:30pm","Character Meet & Greet","show","Front of Park"],
- ["2:30pm","Rescue Jr. Dance Party","play","Rescue Jr. Stage"],
- ["3:00pm","Omar nap (stroller)","nap",""],
- ["4:30pm","Flippers, Facts & Fun (Sea Lions)","show","Sea Lion Amphitheater"],
- ["5:00pm","Dinner","meal",""],
- ["6:00pm","Orca Encounter","show","Orca Stadium"],
- ["6:45pm","Head out","leave",""]]},
+{n:"4 · Animals-First", s:"Light on shows, heavy on exhibits + touch pools. Out ~6:30.", items:[
+ ["1:00pm","Arrive + park + security","leave",""],
+ ["1:45pm","Lunch","meal",""],
+ ["2:30pm","Explorer's Reef touch pools","animals","Explorer's Reef"],
+ ["3:15pm","Penguins, turtles, otters","animals","Penguin Encounter / Turtle Reef"],
+ ["4:00pm","Shark tunnel + aquarium","animals","Shark Encounter"],
+ ["4:30pm","Omar nap (stroller)","nap",""],
+ ["5:45pm","Orca Encounter ★","show","Orca Stadium"],
+ ["6:30pm","Head out","leave",""]]},
+{n:"5 · Early Out", s:"Relaxed half-day; nap back at the hotel. Leave ~4.", items:[
+ ["1:00pm","Arrive + park + security","leave",""],
+ ["1:45pm","Lunch","meal",""],
+ ["2:30pm","Orca Encounter ★","show","Orca Stadium"],
+ ["3:15pm","Touch pools + Rescue Jr. Dance Party","play","Explorer's Reef / Rescue Jr."],
+ ["4:00pm","Head out (nap at hotel)","leave",""]]},
+{n:"6 · Two-Orca + Dolphin", s:"See the orcas twice + dolphins, easy pace. Out ~7:45.", items:[
+ ["1:00pm","Arrive + park + security","leave",""],
+ ["1:45pm","Lunch","meal",""],
+ ["2:30pm","Orca Encounter ★","show","Orca Stadium"],
+ ["3:15pm","Dolphin Point viewing + animals","animals","Dolphin Point"],
+ ["4:00pm","Omar nap (stroller)","nap",""],
+ ["5:30pm","Orca Encounter (2nd) ★","show","Orca Stadium"],
+ ["6:15pm","Dinner","meal",""],
+ ["6:45pm","Dolphin Adventures ★","show","Dolphin Amphitheater"],
+ ["7:45pm","Head out","leave",""]]},
+{n:"7 · Reserved-Seat VIP", s:"All 3 shows in reserved seats + Skyride Quick Queue + Platinum dining.", items:[
+ ["1:00pm","Arrive, Up-Close parking","leave",""],
+ ["1:45pm","Lunch (20% Platinum discount)","meal",""],
+ ["2:30pm","Orca Encounter — reserved seats ★","show","Orca Stadium"],
+ ["3:15pm","Touch pools + Rescue Jr.","play","Explorer's Reef / Rescue Jr."],
+ ["4:00pm","Sea Lions — reserved seats ★","show","Sea Lion Amphitheater"],
+ ["4:45pm","Omar nap (stroller)","nap",""],
+ ["6:00pm","Dinner","meal",""],
+ ["6:45pm","Dolphin Adventures — reserved seats ★","show","Dolphin Amphitheater"],
+ ["7:45pm","Skyride (free Quick Queue)","play","Bayside Skyride"],
+ ["8:45pm","Ocean of Dreams drone show","show","over the park"],
+ ["9:00pm","Head out","leave",""]]},
+{n:"8 · Balanced", s:"A bit of everything, comfortable pace. Leave ~7 (or stay for drone).", items:[
+ ["1:00pm","Arrive + park + security","leave",""],
+ ["1:45pm","Lunch","meal",""],
+ ["2:30pm","Orca Encounter ★","show","Orca Stadium"],
+ ["3:15pm","Rescue Jr. Dance Party + touch pools","play","Rescue Jr. / Explorer's Reef"],
+ ["4:00pm","Omar nap (stroller)","nap",""],
+ ["5:30pm","Flippers, Facts & Fun (Sea Lions) ★","show","Sea Lion Amphitheater"],
+ ["6:15pm","Dinner","meal",""],
+ ["7:00pm","Head out (or stay for 8:45 drone show)","leave",""]]},
 ];
 
 const pills=document.getElementById('pills');
-const tag={show:"SHOW",meal:"MEAL",animals:"ANIMALS",play:"PLAY",nap:"NAP",leave:"LEAVE"};
+const tag={show:"SHOW",meal:"MEAL",animals:"ANIMALS",play:"PLAY",nap:"NAP",leave:"LOGISTICS"};
 function render(i){
   [...pills.children].forEach((p,j)=>p.classList.toggle('active',j===i));
   const pl=PLANS[i];
